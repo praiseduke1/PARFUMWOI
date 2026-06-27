@@ -12,9 +12,9 @@ DEBUG = os.getenv('DEBUG', 'True').strip().lower() in ('true', '1', 'yes')
 
 if not SECRET_KEY and not DEBUG:
     raise RuntimeError('SECRET_KEY must be set in production!')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,praiseduke.pythonanywhere.com').split(',')
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:8000,http://127.0.0.1:8000,https://praiseduke.pythonanywhere.com').split(',')
 
 DJANGO_APPS = [
     'jazzmin',
