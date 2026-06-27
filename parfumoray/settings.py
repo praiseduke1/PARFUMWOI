@@ -306,8 +306,23 @@ KOMERCE_API_KEY = os.getenv('KOMERCE_API_KEY', '')
 KOMERCE_BASE_URL = os.getenv('KOMERCE_BASE_URL', 'https://api.komerce.co.id/api/v1/shipping')
 
 _log_dir = BASE_DIR / 'logs'
+_handlers = {
+    'console': {
+        'level': 'INFO' if not DEBUG else 'DEBUG',
+        'class': 'logging.StreamHandler',
+        'formatter': 'verbose',
+    },
+}
 _komerce_handlers = ['console']
 if _log_dir.exists():
+    _handlers['komerce_file'] = {
+        'level': 'DEBUG',
+        'class': 'logging.handlers.RotatingFileHandler',
+        'filename': _log_dir / 'rajaongkir.log',
+        'maxBytes': 10485760,
+        'backupCount': 5,
+        'formatter': 'verbose',
+    }
     _komerce_handlers.append('komerce_file')
 
 LOGGING = {
@@ -323,21 +338,7 @@ LOGGING = {
             'style': '{',
         },
     },
-    'handlers': {
-        'console': {
-            'level': 'INFO' if not DEBUG else 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'komerce_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': _log_dir / 'rajaongkir.log',
-            'maxBytes': 10485760,
-            'backupCount': 5,
-            'formatter': 'verbose',
-        },
-    },
+    'handlers': _handlers,
     'loggers': {
         'django.request': {
             'handlers': ['console'],
