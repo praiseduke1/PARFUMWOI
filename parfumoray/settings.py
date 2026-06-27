@@ -305,6 +305,11 @@ MIDTRANS_IS_PRODUCTION = os.getenv('MIDTRANS_IS_PRODUCTION', 'False').strip().lo
 KOMERCE_API_KEY = os.getenv('KOMERCE_API_KEY', '')
 KOMERCE_BASE_URL = os.getenv('KOMERCE_BASE_URL', 'https://api.komerce.co.id/api/v1/shipping')
 
+_log_dir = BASE_DIR / 'logs'
+_komerce_handlers = ['console']
+if _log_dir.exists():
+    _komerce_handlers.append('komerce_file')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -327,7 +332,7 @@ LOGGING = {
         'komerce_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'rajaongkir.log',
+            'filename': _log_dir / 'rajaongkir.log',
             'maxBytes': 10485760,
             'backupCount': 5,
             'formatter': 'verbose',
@@ -345,12 +350,12 @@ LOGGING = {
             'propagate': False,
         },
         'apps.shipping': {
-            'handlers': ['console', 'komerce_file'],
+            'handlers': _komerce_handlers,
             'level': 'INFO',
             'propagate': False,
         },
         'apps.shipping.services.komerce': {
-            'handlers': ['console', 'komerce_file'],
+            'handlers': _komerce_handlers,
             'level': 'DEBUG',
             'propagate': False,
         },
