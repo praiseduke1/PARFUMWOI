@@ -558,11 +558,15 @@ async function fetchAllShippingCosts() {
     showShippingLoading();
 
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
         const resp = await fetch('{% url "shipping:api_cost" %}', {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
             body: JSON.stringify({district_id: districtId}),
+            signal: controller.signal,
         });
+        clearTimeout(timeoutId);
         const data = await resp.json();
 
         if (!resp.ok) {
@@ -578,6 +582,10 @@ async function fetchAllShippingCosts() {
             throw new Error('Tidak ada layanan pengiriman tersedia');
         }
     } catch (err) {
+        if (err.name === 'AbortError') {
+            showShippingError('Waktu habis. Silakan coba lagi.');
+            return;
+        }
         if (shippingRetryCount < MAX_SHIPPING_RETRIES) {
             shippingRetryCount++;
             await new Promise(r => setTimeout(r, 1000));

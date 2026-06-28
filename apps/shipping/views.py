@@ -1,19 +1,13 @@
 import json
 import logging
-import traceback
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-
-import traceback
 
 from django.conf import settings
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.shortcuts import get_object_or_404
 
 from apps.accounts.models import CustomerAddress
 from apps.regions.models import District
@@ -123,39 +117,49 @@ def api_shipping_cost(request):
     errors = []
     is_rate_limited = False
 
-    for courier in enabled_couriers:
+    def _fetch_courier(courier):
         try:
             result = get_cached_cost(origin_id, dest_id, weight, courier)
             services = format_courier_services(result)
-            if services:
-                logger.info('Courier %s: got %d services', courier, len(services))
-            else:
-                logger.warning(
-                    '[SHIPPING EMPTY] Courier %s: no services returned, '
-                    'raw=%s', courier, json.dumps(result, default=str)[:500],
-                )
-            all_services.extend(services)
+            return courier, services, None
         except KomerceAPIError as e:
-            if e.status_code == 429:
-                is_rate_limited = True
-            logger.warning(
-                '[SHIPPING API ERROR] Courier=%s, Status=%s, Message=%s, '
-                'ResponseData=%s',
-                courier, e.status_code, str(e),
-                json.dumps(e.response_data, default=str) if e.response_data else 'N/A',
-            )
-            errors.append({
-                'courier': courier,
-                'message': str(e),
-                'status_code': e.status_code,
-                'response_data': e.response_data,
-            })
+            return courier, [], e
         except Exception as e:
             logger.error(
                 '[SHIPPING UNEXPECTED ERROR] Courier=%s, Error=%s',
                 courier, e, exc_info=True,
             )
-            errors.append({'courier': courier, 'message': 'Terjadi kesalahan'})
+            return courier, [], Exception('Terjadi kesalahan')
+
+    with ThreadPoolExecutor(max_workers=len(enabled_couriers)) as executor:
+        futures = [executor.submit(_fetch_courier, c) for c in enabled_couriers]
+        for future in as_completed(futures):
+            courier, services, error = future.result()
+            if error is None:
+                if services:
+                    logger.info('Courier %s: got %d services', courier, len(services))
+                else:
+                    logger.warning(
+                        '[SHIPPING EMPTY] Courier %s: no services returned',
+                        courier,
+                    )
+                all_services.extend(services)
+            else:
+                if isinstance(error, KomerceAPIError):
+                    if error.status_code == 429:
+                        is_rate_limited = True
+                    logger.warning(
+                        '[SHIPPING API ERROR] Courier=%s, Status=%s, Message=%s',
+                        courier, error.status_code, str(error),
+                    )
+                    errors.append({
+                        'courier': courier,
+                        'message': str(error),
+                        'status_code': error.status_code,
+                        'response_data': error.response_data,
+                    })
+                else:
+                    errors.append({'courier': courier, 'message': str(error)})
 
     if not all_services and errors:
         logger.error(
