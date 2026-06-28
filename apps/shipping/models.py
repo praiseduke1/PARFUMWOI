@@ -80,15 +80,16 @@ class Courier(models.Model):
 
     @classmethod
     def get_default_couriers(cls):
+        prefix = '/static/images/couriers/'
         return {
-            'jne': {'name': 'JNE', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/jne.png'},
-            'jnt': {'name': 'J&T', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/jnt.png'},
-            'sicepat': {'name': 'SiCepat', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/sicepat.png'},
-            'pos': {'name': 'POS Indonesia', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/pos.png'},
-            'anteraja': {'name': 'AnterAja', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/anteraja.png'},
-            'ninja': {'name': 'Ninja Xpress', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/ninja.png'},
-            'tiki': {'name': 'TIKI', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/tiki.png'},
-            'lion': {'name': 'Lion Parcel', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/lion.png'},
+            'jne': {'name': 'JNE', 'logo': f'{prefix}jne.svg'},
+            'jnt': {'name': 'J&T', 'logo': f'{prefix}jnt.svg'},
+            'sicepat': {'name': 'SiCepat', 'logo': f'{prefix}sicepat.svg'},
+            'pos': {'name': 'POS Indonesia', 'logo': f'{prefix}pos.svg'},
+            'anteraja': {'name': 'AnterAja', 'logo': f'{prefix}anteraja.svg'},
+            'ninja': {'name': 'Ninja Xpress', 'logo': f'{prefix}ninja.svg'},
+            'tiki': {'name': 'TIKI', 'logo': f'{prefix}tiki.svg'},
+            'lion': {'name': 'Lion Parcel', 'logo': f'{prefix}lion.svg'},
             'sap': {'name': 'SAP Express', 'logo': ''},
-            'idexpress': {'name': 'ID Express', 'logo': 'https://cdn.jsdelivr.net/gh/parfumoray/courier-logos@main/idexpress.png'},
+            'idexpress': {'name': 'ID Express', 'logo': f'{prefix}idexpress.svg'},
         }
