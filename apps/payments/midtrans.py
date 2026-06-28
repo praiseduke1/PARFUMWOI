@@ -41,7 +41,13 @@ def _retry_request(fn, *args, **kwargs):
             raise
 
 
-def create_transaction(order):
+def _build_callback_url(request, order_id, path):
+    if request:
+        return request.build_absolute_uri(f'/payment/{path}/{order_id}/')
+    return f'{settings.BASE_URL}/payment/{path}/{order_id}/'
+
+
+def create_transaction(order, request=None):
     snap = get_snap()
 
     item_details = []
@@ -90,9 +96,9 @@ def create_transaction(order):
             },
         },
         'callbacks': {
-            'finish': f'{settings.BASE_URL}/payment/finish/{order.id}/',
-            'unfinish': f'{settings.BASE_URL}/payment/unfinish/{order.id}/',
-            'error': f'{settings.BASE_URL}/payment/error/{order.id}/',
+            'finish': _build_callback_url(request, order.id, 'finish'),
+            'unfinish': _build_callback_url(request, order.id, 'unfinish'),
+            'error': _build_callback_url(request, order.id, 'error'),
         },
     }
 
