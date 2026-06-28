@@ -107,6 +107,7 @@
                     </svg>
                     Bayar Sekarang
                 </button>
+                <p id="pay-waiting" class="hidden text-sm text-stone-500 text-center mt-4">Pembayaran diproses... Silakan selesaikan di tab baru. Halaman ini akan otomatis kembali setelah pembayaran selesai.</p>
 
                 <div class="mt-6 space-y-3">
                     <div class="flex items-center gap-2 text-xs text-stone-400">
@@ -138,26 +139,27 @@
 <script>
 document.getElementById('pay-button').onclick = function() {
     var btn = this;
+    var originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>';
+    btn.classList.add('hidden');
+    document.getElementById('pay-waiting').classList.remove('hidden');
 
-    snap.pay('{{ payment.snap_token }}', {
-        onSuccess: function(result) {
+    var win = window.open('{{ payment.snap_redirect_url }}', '_blank');
+    if (!win) {
+        alert('Izinkan popup untuk melanjutkan pembayaran.');
+        btn.disabled = false;
+        btn.classList.remove('hidden');
+        document.getElementById('pay-waiting').classList.add('hidden');
+        btn.innerHTML = originalText;
+        return;
+    }
+
+    var checkTimer = setInterval(function() {
+        if (win.closed) {
+            clearInterval(checkTimer);
             window.location.href = "{% url 'payments:finish' order.id %}";
-        },
-        onPending: function(result) {
-            window.location.href = "{% url 'payments:unfinish' order.id %}";
-        },
-        onError: function(result) {
-            btn.disabled = false;
-            btn.innerHTML = 'Bayar Sekarang';
-            window.location.href = "{% url 'payments:error' order.id %}";
-        },
-        onClose: function() {
-            btn.disabled = false;
-            btn.innerHTML = 'Bayar Sekarang';
         }
-    });
+    }, 1000);
 };
 </script>
 {% endblock %}
