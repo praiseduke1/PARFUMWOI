@@ -121,6 +121,11 @@ def payment_finish(request, order_id):
     order = result
     payment = get_object_or_404(Payment, order=order)
 
+    if payment.status == Payment.PaymentStatus.SUCCESS:
+        return render(request, 'payments/success.html', {
+            'order': order, 'payment': payment, 'verified': True,
+        })
+
     try:
         status_data = get_transaction_status(order)
         tx_status = status_data.get('transaction_status')
@@ -141,7 +146,11 @@ def payment_finish(request, order_id):
         elif tx_status in ('pending',):
             return render(request, 'payments/unfinish.html', {'order': order})
     except Exception:
-        pass
+        if payment.status == Payment.PaymentStatus.SUCCESS:
+            return render(request, 'payments/success.html', {
+                'order': order, 'payment': payment, 'verified': True,
+            })
+        return redirect('orders:detail', order_id=order.id)
 
     return redirect('orders:detail', order_id=order.id)
 
