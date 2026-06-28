@@ -121,32 +121,29 @@ def payment_finish(request, order_id):
     order = result
     payment = get_object_or_404(Payment, order=order)
 
-    verified = False
     try:
         status_data = get_transaction_status(order)
         tx_status = status_data.get('transaction_status')
         if tx_status in ('capture', 'settlement'):
             _process_successful_payment(payment, order, status_data)
-            verified = True
+            return render(request, 'payments/success.html', {
+                'order': order, 'payment': payment, 'verified': True,
+            })
         elif tx_status in ('deny', 'cancel', 'expire'):
             payment.status = Payment.PaymentStatus.FAILED
             payment.raw_response = status_data
             order.status = Order.Status.CANCELLED
             payment.save()
             order.save()
-        return render(request, 'payments/success.html' if verified else 'payments/error.html', {
-            'order': order,
-            'payment': payment,
-        })
+            return render(request, 'payments/error.html', {
+                'order': order, 'payment': payment,
+            })
+        elif tx_status in ('pending',):
+            return render(request, 'payments/unfinish.html', {'order': order})
     except Exception:
         pass
 
-    context = {
-        'order': order,
-        'payment': payment,
-        'verified': verified,
-    }
-    return render(request, 'payments/success.html', context)
+    return redirect('orders:detail', order_id=order.id)
 
 
 @login_required

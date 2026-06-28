@@ -157,7 +157,7 @@ document.getElementById('pay-button').onclick = function() {
     var checkTimer = setInterval(function() {
         if (win.closed) {
             clearInterval(checkTimer);
-            window.location.href = "{% url 'payments:finish' order.id %}";
+            window.location.href = "{% url 'orders:detail' order.id %}";
         }
     }, 1000);
 };
