@@ -118,13 +118,16 @@
                             Sudah Diklaim
                         </span>
                         {% else %}
-                        <a href="{% url 'promotions:claim_voucher' v.id %}"
-                            class="flex items-center justify-center gap-2 w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md active:scale-[0.98]">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            Klaim Voucher
-                        </a>
+                        <form method="post" action="{% url 'promotions:claim_voucher' v.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="flex items-center justify-center gap-2 w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md active:scale-[0.98]">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Klaim Voucher
+                            </button>
+                        </form>
                         {% endif %}
                     {% elif user.is_superuser %}
                         <span class="flex items-center justify-center gap-2 w-full bg-stone-100 text-stone-400 text-sm font-medium py-2.5 px-4 rounded-xl border border-stone-200 cursor-not-allowed">

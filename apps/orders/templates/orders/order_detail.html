@@ -154,10 +154,11 @@
                 class="block w-full text-center bg-white text-rose-600 border border-rose-200 py-3 rounded-xl font-medium hover:bg-rose-50 transition mt-3">
                 Batalkan Pesanan
             </button>
+            <form id="cancel-form" method="post" action="{% url 'orders:cancel' order.id %}" class="hidden">{% csrf_token %}</form>
             <script>
             function confirmCancel() {
                 if (confirm('Yakin ingin membatalkan pesanan {{ order.order_number }}?')) {
-                    window.location.href = "{% url 'orders:cancel' order.id %}";
+                    document.getElementById('cancel-form').submit();
                 }
             }
             </script>
@@ -198,10 +199,13 @@
                 class="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium py-3 rounded-xl transition">
                 Batal
             </button>
-            <a href="{% url 'orders:confirm_received' order.id %}"
-                class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl text-center transition active:scale-[0.98]">
-                Ya, Konfirmasi
-            </a>
+            <form method="post" action="{% url 'orders:confirm_received' order.id %}">
+                {% csrf_token %}
+                <button type="submit"
+                    class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl text-center transition active:scale-[0.98] w-full">
+                    Ya, Konfirmasi
+                </button>
+            </form>
         </div>
     </div>
 </div>
