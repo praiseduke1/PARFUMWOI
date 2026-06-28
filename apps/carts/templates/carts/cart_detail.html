@@ -183,7 +183,16 @@
 <script>
 function confirmRemove(itemId, productName) {
     if (confirm(`Hapus ${productName} dari keranjang?`)) {
-        window.location.href = "{% url 'carts:remove' 0 %}".replace('0', itemId);
+        var form = document.createElement('form');
+        form.method = 'post';
+        form.action = "{% url 'carts:remove' 0 %}".replace('0', itemId);
+        var csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = 'csrfmiddlewaretoken';
+        csrf.value = '{{ csrf_token }}';
+        form.appendChild(csrf);
+        document.body.appendChild(form);
+        form.submit();
     }
 }
 </script>

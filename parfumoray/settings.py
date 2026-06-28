@@ -10,6 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'True').strip().lower() in ('true', '1', 'yes')
 
+# Separate HTTPS flag: force HTTPS cookie/security settings even when DEBUG=True on PythonAnywhere
+_FORCE_HTTPS = os.getenv('FORCE_HTTPS', 'False').strip().lower() in ('true', '1', 'yes')
+
 if not SECRET_KEY and not DEBUG:
     raise RuntimeError('SECRET_KEY must be set in production!')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,praiseduke.pythonanywhere.com').split(',')
@@ -375,15 +378,26 @@ LOGGING = {
     },
 }
 
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+# ── Proxy / HTTPS ──────────────────────────────────────────────
+# PythonAnywhere always terminates SSL at nginx; must be set unconditionally.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# ── Cookie security (independent of DEBUG — use FORCE_HTTPS env var) ──
+_use_https = _FORCE_HTTPS or not DEBUG
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SECURE_REFERRER_POLICY = 'same-origin'
+
+if _use_https:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SESSION_COOKIE_HTTPONLY = True
-    CSRF_COOKIE_HTTPONLY = True
     DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB
