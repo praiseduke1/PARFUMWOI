@@ -43,14 +43,14 @@ def checkout(request, order_id):
 
     payment, created = Payment.objects.get_or_create(order=order)
 
-    if not payment.snap_token:
-        try:
-            result = create_transaction(order, request=request)
-            payment.snap_token = result['token']
-            payment.snap_redirect_url = result['redirect_url']
-            payment.amount = order.total_price
-            payment.save()
-        except Exception as e:
+    try:
+        result = create_transaction(order, request=request)
+        payment.snap_token = result['token']
+        payment.snap_redirect_url = result['redirect_url']
+        payment.amount = order.total_price
+        payment.save()
+    except Exception as e:
+        if not payment.snap_token:
             return render(request, 'payments/error.html', {
                 'error': f'Gagal terhubung ke Midtrans: {e}',
                 'order': order,
