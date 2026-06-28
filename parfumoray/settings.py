@@ -138,13 +138,16 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Cache (optional, falls back to locmem)
-if os.getenv('REDIS_URL'):
+# Uses PARFUMORAY_REDIS_URL (not REDIS_URL) to avoid conflicts
+# with PythonAnywhere's default REDIS_URL env var.
+_redis_url = os.getenv('PARFUMORAY_REDIS_URL')
+if _redis_url:
     try:
         import django_redis  # noqa: F401
         CACHES = {
             'default': {
                 'BACKEND': 'django_redis.cache.RedisCache',
-                'LOCATION': os.getenv('REDIS_URL'),
+                'LOCATION': _redis_url,
                 'OPTIONS': {
                     'CLIENT_CLASS': 'django_redis.client.DefaultClient',
                 },
