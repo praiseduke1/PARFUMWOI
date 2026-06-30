@@ -1,82 +1,82 @@
 {% extends 'base.html' %}
 {% load core_tags %}
 
-{% block title %}Fragrance Guide — Parfum Morris{% endblock %}
+{% block title %}Panduan Wewangian — Parfum Morris{% endblock %}
 
 {% block content %}
 <section class="py-20 lg:py-28 bg-morris-950">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-gold-400 font-medium text-sm tracking-[0.2em] uppercase">Fragrance Guide</span>
-            <h1 class="mt-6 text-4xl lg:text-6xl font-serif font-bold text-white leading-tight">Understand Your <span class="text-gold-400 italic">Scent</span></h1>
-            <p class="mt-4 text-morris-400 leading-relaxed">Learn about fragrance families, notes, and how to choose the perfect scent for every occasion.</p>
+            <span class="text-gold-400 font-medium text-sm tracking-[0.2em] uppercase">Panduan Wewangian</span>
+            <h1 class="mt-6 text-4xl lg:text-6xl font-serif font-bold text-white leading-tight">Kenali <span class="text-gold-400 italic">Aroma</span> Anda</h1>
+            <p class="mt-4 text-morris-400 leading-relaxed">Pelajari keluarga wewangian, catatan aroma, dan cara memilih wangi yang sempurna untuk setiap kesempatan.</p>
         </div>
 
         <div class="space-y-12">
             <div class="bg-morris-900 rounded-3xl p-8 lg:p-12 border border-morris-700">
-                <h2 class="text-2xl font-serif font-bold text-white mb-6">Fragrance Families</h2>
+                <h2 class="text-2xl font-serif font-bold text-white mb-6">Keluarga Wewangian</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-morris-950 rounded-xl p-5 border border-morris-700">
                         <h3 class="font-bold text-gold-400 mb-2">Citrus</h3>
-                        <p class="text-sm text-morris-400">Fresh, zesty notes like lemon, bergamot, and orange. Energetic and uplifting.</p>
+                        <p class="text-sm text-morris-400">Aroma segar dan tajam seperti lemon, bergamot, dan jeruk. Penuh energi dan menyegarkan.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-5 border border-morris-700">
-                        <h3 class="font-bold text-gold-400 mb-2">Floral</h3>
-                        <p class="text-sm text-morris-400">Romantic blossoms like rose, jasmine, and lavender. Feminine and timeless.</p>
+                        <h3 class="font-bold text-gold-400 mb-2">Bunga</h3>
+                        <p class="text-sm text-morris-400">Aroma romantis seperti mawar, melati, dan lavender. Feminin dan tak lekang waktu.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-5 border border-morris-700">
-                        <h3 class="font-bold text-gold-400 mb-2">Woody</h3>
-                        <p class="text-sm text-morris-400">Warm, earthy scents like sandalwood, cedar, and oud. Grounding and sophisticated.</p>
+                        <h3 class="font-bold text-gold-400 mb-2">Kayu</h3>
+                        <p class="text-sm text-morris-400">Aroma hangat dan alami seperti cendana, cedar, dan oud. Membumi dan elegan.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-5 border border-morris-700">
                         <h3 class="font-bold text-gold-400 mb-2">Oriental</h3>
-                        <p class="text-sm text-morris-400">Rich, exotic notes like amber, vanilla, and spices. Warm and sensual.</p>
+                        <p class="text-sm text-morris-400">Aroma kaya dan eksotis seperti amber, vanila, dan rempah. Hangat dan sensual.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-5 border border-morris-700">
-                        <h3 class="font-bold text-gold-400 mb-2">Fresh</h3>
-                        <p class="text-sm text-morris-400">Clean, aquatic, and green notes. Crisp and invigorating.</p>
+                        <h3 class="font-bold text-gold-400 mb-2">Segar</h3>
+                        <p class="text-sm text-morris-400">Aroma bersih, akuatik, dan hijau. Segar dan menyegarkan.</p>
                     </div>
                 </div>
             </div>
 
             <div class="bg-morris-900 rounded-3xl p-8 lg:p-12 border border-morris-700">
-                <h2 class="text-2xl font-serif font-bold text-white mb-6">Fragrance Notes Pyramid</h2>
-                <p class="text-morris-400 leading-relaxed mb-8">Every fragrance unfolds in three layers that reveal themselves over time:</p>
+                <h2 class="text-2xl font-serif font-bold text-white mb-6">Piramida Catatan Wewangian</h2>
+                <p class="text-morris-400 leading-relaxed mb-8">Setiap wewangian terbuka dalam tiga lapisan yang muncul seiring waktu:</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div class="bg-morris-950 rounded-xl p-6 border border-morris-700 text-center">
                         <div class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
-                            <span class="text-lg font-bold text-amber-400">T</span>
+                            <span class="text-lg font-bold text-amber-400">A</span>
                         </div>
-                        <h3 class="font-bold text-white mb-2">Top Notes</h3>
-                        <p class="text-xs text-morris-400">First impression, lasts 15–30 minutes. Light and volatile molecules.</p>
+                        <h3 class="font-bold text-white mb-2">Catatan Atas</h3>
+                        <p class="text-xs text-morris-400">Kesan pertama, bertahan 15–30 menit. Molekul ringan dan mudah menguap.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-6 border border-morris-700 text-center">
                         <div class="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center mx-auto mb-3">
-                            <span class="text-lg font-bold text-rose-400">M</span>
+                            <span class="text-lg font-bold text-rose-400">T</span>
                         </div>
-                        <h3 class="font-bold text-white mb-2">Middle Notes</h3>
-                        <p class="text-xs text-morris-400">The heart of the fragrance, lasts 3–5 hours. Full-bodied and defining.</p>
+                        <h3 class="font-bold text-white mb-2">Catatan Tengah</h3>
+                        <p class="text-xs text-morris-400">Inti dari wewangian, bertahan 3–5 jam. Penuh karakter dan menentukan.</p>
                     </div>
                     <div class="bg-morris-950 rounded-xl p-6 border border-morris-700 text-center">
                         <div class="w-12 h-12 rounded-full bg-stone-500/10 flex items-center justify-center mx-auto mb-3">
-                            <span class="text-lg font-bold text-stone-400">B</span>
+                            <span class="text-lg font-bold text-stone-400">D</span>
                         </div>
-                        <h3 class="font-bold text-white mb-2">Base Notes</h3>
-                        <p class="text-xs text-morris-400">The foundation, lasts 6–24 hours. Deep, rich, and lingering.</p>
+                        <h3 class="font-bold text-white mb-2">Catatan Dasar</h3>
+                        <p class="text-xs text-morris-400">Fundamen wewangian, bertahan 6–24 jam. Dalam, kaya, dan membekas.</p>
                     </div>
                 </div>
             </div>
 
             <div class="bg-morris-900 rounded-3xl p-8 lg:p-12 border border-morris-700">
-                <h2 class="text-2xl font-serif font-bold text-white mb-6">How to Choose Your Fragrance</h2>
+                <h2 class="text-2xl font-serif font-bold text-white mb-6">Cara Memilih Wewangian</h2>
                 <div class="space-y-4">
                     <div class="flex items-start gap-4">
                         <span class="w-8 h-8 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <span class="text-gold-400 font-bold text-sm">1</span>
                         </span>
                         <div>
-                            <h3 class="font-bold text-white">Know Your Occasion</h3>
-                            <p class="text-sm text-morris-400">Light, fresh scents for daytime and work; deeper, richer fragrances for evenings and special events.</p>
+                            <h3 class="font-bold text-white">Kenali Acara Anda</h3>
+                            <p class="text-sm text-morris-400">Aroma ringan dan segar untuk siang hari dan kerja; wewangian yang lebih dalam dan kaya untuk malam dan acara spesial.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
@@ -84,8 +84,8 @@
                             <span class="text-gold-400 font-bold text-sm">2</span>
                         </span>
                         <div>
-                            <h3 class="font-bold text-white">Consider the Season</h3>
-                            <p class="text-sm text-morris-400">Fresh citrus and greens for summer; warm woody and oriental notes for winter.</p>
+                            <h3 class="font-bold text-white">Pertimbangkan Musim</h3>
+                            <p class="text-sm text-morris-400">Citrus segar dan aroma hijau untuk musim panas; aroma kayu hangat dan oriental untuk musim dingin.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
@@ -93,8 +93,8 @@
                             <span class="text-gold-400 font-bold text-sm">3</span>
                         </span>
                         <div>
-                            <h3 class="font-bold text-white">Test Before You Invest</h3>
-                            <p class="text-sm text-morris-400">Fragrances smell different on everyone. Allow the scent to develop on your skin before deciding.</p>
+                            <h3 class="font-bold text-white">Coba Sebelum Membeli</h3>
+                            <p class="text-sm text-morris-400">Wewangian tercium berbeda pada setiap orang. Biarkan aromanya berkembang di kulit Anda sebelum memutuskan.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
@@ -102,8 +102,8 @@
                             <span class="text-gold-400 font-bold text-sm">4</span>
                         </span>
                         <div>
-                            <h3 class="font-bold text-white">Trust Your Instinct</h3>
-                            <p class="text-sm text-morris-400">The best fragrance is the one that makes you feel confident and happy. Wear what you love.</p>
+                            <h3 class="font-bold text-white">Percayai Insting Anda</h3>
+                            <p class="text-sm text-morris-400">Wewangian terbaik adalah yang membuat Anda percaya diri dan bahagia. Kenakan apa yang Anda cintai.</p>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
         <div class="text-center mt-12">
             <a href="{% url 'products:list' %}"
                 class="inline-flex items-center gap-2 bg-gold-600 hover:bg-gold-500 text-white font-medium px-8 py-3.5 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md active:scale-[0.98]">
-                Explore Our Collection
+                Jelajahi Koleksi Kami
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                 </svg>

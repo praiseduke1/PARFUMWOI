@@ -33,7 +33,7 @@
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-600 group-hover:w-full transition-all duration-300"></span>
                 </a>
                 <a href="{% url 'products:fragrance_guide' %}" class="text-sm font-medium text-stone-400 hover:text-amber-400 transition-colors relative group py-2">
-                    Fragrance Guide
+                    Panduan Wewangian
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-600 group-hover:w-full transition-all duration-300"></span>
                 </a>
                 <a href="{% url 'products:about' %}" class="text-sm font-medium text-stone-400 hover:text-amber-400 transition-colors relative group py-2">
@@ -147,7 +147,7 @@
         <div class="px-4 py-4 space-y-1">
             <a href="{% url 'products:home' %}" class="block px-3 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-800/50 rounded-lg transition">Beranda</a>
             <a href="{% url 'products:list' %}" class="block px-3 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-800/50 rounded-lg transition">Koleksi</a>
-            <a href="{% url 'products:fragrance_guide' %}" class="block px-3 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-800/50 rounded-lg transition">Fragrance Guide</a>
+            <a href="{% url 'products:fragrance_guide' %}" class="block px-3 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-800/50 rounded-lg transition">Panduan Wewangian</a>
             <a href="{% url 'products:about' %}" class="block px-3 py-2.5 text-sm font-medium text-stone-300 hover:bg-stone-800/50 rounded-lg transition">Tentang Morris</a>
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}

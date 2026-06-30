@@ -14,6 +14,28 @@
   .breadcrumbs { display: none !important; }
   #header { background: rgba(17,24,39,0.95) !important; border-bottom: 1px solid #374151 !important; }
   #user-tools a { color: #9CA3AF !important; }
+  .rank-num.rank-1 { background: rgba(245,158,11,.2); color: #F59E0B; }
+  .rank-num.rank-2 { background: rgba(156,163,175,.2); color: #D1D5DB; }
+  .rank-num.rank-3 { background: rgba(180,83,9,.2); color: #D97706; }
+  .rank-num.rank-other { background: rgba(107,114,128,.15); color: var(--dash-text-muted); }
+  .rank-bar-fill.rank-1 { background: linear-gradient(90deg,#F59E0B,#D97706); }
+  .rank-bar-fill.rank-2 { background: linear-gradient(90deg,#9CA3AF,#6B7280); }
+  .rank-bar-fill.rank-3 { background: linear-gradient(90deg,#D97706,#92400E); }
+  .rank-bar-fill.rank-other { background: linear-gradient(90deg,#3B82F6,#2563EB); }
+  .timeline-dot.type-order { border-color: #3B82F6; color: #3B82F6; }
+  .timeline-dot.type-payment { border-color: #10B981; color: #10B981; }
+  .timeline-dot.type-review { border-color: #F59E0B; color: #F59E0B; }
+  .timeline-badge.type-order { background: rgba(59,130,246,.12); color: #60A5FA; }
+  .timeline-badge.type-payment { background: rgba(16,185,129,.12); color: #34D399; }
+  .timeline-badge.type-review { background: rgba(245,158,11,.12); color: #FBBF24; }
+  .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.status-pending_payment { background: #f59e0b; }
+  .status-dot.status-paid { background: #3b82f6; }
+  .status-dot.status-processing { background: #8b5cf6; }
+  .status-dot.status-shipped { background: #6B7280; }
+  .status-dot.status-delivered { background: #10b981; }
+  .status-dot.status-completed { background: #059669; }
+  .status-dot.status-cancelled { background: #ef4444; }
 </style>
 {% endblock %}
 
@@ -295,7 +317,7 @@
           {% if top_products %}
           {% for p in top_products|slice:":5" %}
           <div class="rank-item">
-            <div class="rank-num" style="{% if forloop.counter == 1 %}background:rgba(245,158,11,.2);color:#F59E0B;{% elif forloop.counter == 2 %}background:rgba(156,163,175,.2);color:#D1D5DB;{% elif forloop.counter == 3 %}background:rgba(180,83,9,.2);color:#D97706;{% else %}background:rgba(107,114,128,.15);color:var(--dash-text-muted);{% endif %}">#{{ forloop.counter }}</div>
+            <div class="rank-num{% if forloop.counter == 1 %} rank-1{% elif forloop.counter == 2 %} rank-2{% elif forloop.counter == 3 %} rank-3{% else %} rank-other{% endif %}">#{{ forloop.counter }}</div>
             {% if p.image %}
             <img src="{{ p.image }}" alt="{{ p.name }}" class="rank-thumb">
             {% else %}
@@ -305,7 +327,7 @@
               <div class="rank-name">{{ p.name }}</div>
               <div class="rank-meta">{{ p.total_sold }} terjual &middot; {{ p.revenue|rupiah }}</div>
               <div class="rank-bar">
-                <div class="rank-bar-fill" style="width:{{ p.pct }}%;{% if forloop.counter == 1 %}background:linear-gradient(90deg,#F59E0B,#D97706);{% elif forloop.counter == 2 %}background:linear-gradient(90deg,#9CA3AF,#6B7280);{% elif forloop.counter == 3 %}background:linear-gradient(90deg,#D97706,#92400E);{% else %}background:linear-gradient(90deg,#3B82F6,#2563EB);{% endif %}"></div>
+                <div class="rank-bar-fill{% if forloop.counter == 1 %} rank-1{% elif forloop.counter == 2 %} rank-2{% elif forloop.counter == 3 %} rank-3{% else %} rank-other{% endif %}" style="width:{{ p.pct }}%;"></div>
               </div>
             </div>
           </div>
@@ -353,7 +375,7 @@
           <div class="status-legend" style="flex:1;">
             {% for s, info in status_counts.items %}
             <div class="status-legend-item">
-              <span class="status-dot" style="background:{{ s|status_color }};"></span>
+              <span class="status-dot status-{{ s }}"></span>
               <span class="status-label">{{ info.label }}</span>
               <span class="status-count">{{ info.count }}</span>
               <span class="status-pct">{% widthratio info.count orders_total 100 %}%</span>
@@ -461,13 +483,13 @@
       <div class="timeline">
         {% for a in activities %}
         <a href="{{ a.url }}" class="timeline-item" style="text-decoration:none;">
-          <div class="timeline-dot" style="{% if a.type == 'order' %}border-color:#3B82F6;color:#3B82F6;{% elif a.type == 'payment' %}border-color:#10B981;color:#10B981;{% elif a.type == 'review' %}border-color:#F59E0B;color:#F59E0B;{% endif %}">
+          <div class="timeline-dot type-{{ a.type }}">
             {% if a.type == 'order' %}🛒{% elif a.type == 'payment' %}💳{% elif a.type == 'review' %}⭐{% endif %}
           </div>
           <div class="timeline-content">
             <div class="timeline-text">{{ a.text }}</div>
             <div class="timeline-meta">
-              <span class="timeline-badge" style="{% if a.type == 'order' %}background:rgba(59,130,246,.12);color:#60A5FA;{% elif a.type == 'payment' %}background:rgba(16,185,129,.12);color:#34D399;{% elif a.type == 'review' %}background:rgba(245,158,11,.12);color:#FBBF24;{% endif %}">{{ a.status }}</span>
+              <span class="timeline-badge type-{{ a.type }}">{{ a.status }}</span>
               <span class="timeline-time">{{ a.time|timesince }} yang lalu</span>
             </div>
           </div>
@@ -493,6 +515,7 @@
 {{ orders_chart|json_script:"orders-chart" }}
 {{ reg_dates|json_script:"reg-dates" }}
 {{ reg_counts|json_script:"reg-counts" }}
+{{ status_counts|json_script:"status-counts" }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <script>
@@ -661,14 +684,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // ── Status Donut ──
   var sd = document.getElementById('statusDonut');
   if (sd) {
-    var sl = [], sdv = [], sc = [];
+    var scData = JSON.parse(document.getElementById('status-counts').textContent);
     var scm = {
       'pending_payment': '#F59E0B', 'paid': '#3B82F6', 'processing': '#8B5CF6',
       'shipped': '#6B7280', 'delivered': '#10B981', 'completed': '#059669', 'cancelled': '#EF4444'
     };
-    {% for s, info in status_counts.items %}
-    sl.push('{{ info.label }}'); sdv.push({{ info.count }}); sc.push(scm['{{ s }}'] || '#6B7280');
-    {% endfor %}
+    var sl = [], sdv = [], sc = [];
+    for (var s in scData) {
+      var info = scData[s];
+      sl.push(info.label); sdv.push(info.count); sc.push(scm[s] || '#6B7280');
+    }
     new Chart(sd, {
       type: 'doughnut',
       data: { labels: sl, datasets: [{ data: sdv, backgroundColor: sc, borderWidth: 0 }] },
